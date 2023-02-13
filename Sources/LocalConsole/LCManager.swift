@@ -1580,7 +1580,7 @@ final class FrameRateRequest {
     private init() {
         guard UIScreen.main.maximumFramesPerSecond > 60 else { return }
         
-        displayLink.preferredFrameRateRange = CAFrameRateRange(minimum: 90, maximum: Float(UIScreen.main.maximumFramesPerSecond), preferred: Float(UIScreen.main.maximumFramesPerSecond))
+        displayLink.preferredFrameRateRange = CAFrameRateRange(minimum: 45, maximum: Float(UIScreen.main.maximumFramesPerSecond), preferred: Float(UIScreen.main.maximumFramesPerSecond))
         
         // Ensure the DisplayLink stops when the app enters the background, or else the system will shut high frame rate capabilities until the app is suspended and relaunched.
         NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground),
