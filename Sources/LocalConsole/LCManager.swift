@@ -1048,7 +1048,7 @@ public class LCManager: NSObject, UIGestureRecognizerDelegate {
             UIApplication.shared.perform(NSSelectorFromString("terminateWithSuccess"))
         }
         
-        let terminateApplication = UIAction(title: "Force Crash App", image: UIImage(systemName: "exclamationmark.octagon.fill"), attributes: .destructive) { _ in
+        let forceCrashApplication = UIAction(title: "Force Crash App", image: UIImage(systemName: "exclamationmark.octagon.fill"), attributes: .destructive) { _ in
             fatalError()
         }
         
