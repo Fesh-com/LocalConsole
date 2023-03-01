@@ -1019,6 +1019,7 @@ public class LCManager: NSObject, UIGestureRecognizerDelegate {
         }
         
         // Show the right glyph for the current device being used.
+        // wow thats some attention to detail
         let deviceSymbol: String = {
             
             let hasHomeButton = UIScreen.main.value(forKey: "_displ" + "ayCorn" + "erRa" + "dius") as! CGFloat == 0
@@ -1079,7 +1080,7 @@ public class LCManager: NSObject, UIGestureRecognizerDelegate {
         }
         
         debugActions.append(contentsOf: [viewFrames, systemReport, displayReport])
-        let destructActions = [terminateApplication , respring]
+        let destructActions = [terminateApplication , respring, forceCrashApplication]
         
         let debugMenu = UIMenu(
             title: "Debug", image: UIImage(systemName: "ant"),
