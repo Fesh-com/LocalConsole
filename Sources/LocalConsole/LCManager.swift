@@ -1048,6 +1048,12 @@ public class LCManager: NSObject, UIGestureRecognizerDelegate {
             UIApplication.shared.perform(NSSelectorFromString("terminateWithSuccess"))
         }
         
+        let terminateApplication = UIAction(title: "Force Crash App", image: UIImage(systemName: "exclamationmark.octagon.fill"), attributes: .destructive) { _ in
+            fatalError()
+        }
+        
+        
+        // This might be redundant, controlconfig already has respring function
         let respring = UIAction(title: "Restart Spring" + "Board", image: UIImage(systemName: "arrowtriangle.backward"), attributes: .destructive) { _ in
             
             guard let window = UIApplication.shared.windows.first else { return }
