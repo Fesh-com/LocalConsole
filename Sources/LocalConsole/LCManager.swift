@@ -1083,7 +1083,7 @@ public class LCManager: NSObject, UIGestureRecognizerDelegate {
         let destructActions = [terminateApplication , respring, forceCrashApplication]
         
         let debugMenu = UIMenu(
-            title: "Debug", image: UIImage(systemName: "ant"),
+            title: "Debug", image: UIImage(systemName: "ladybug"),
             children: [
                 UIMenu(title: "", options: .displayInline, children: debugActions),
                 UIMenu(title: "", options: .displayInline, children: destructActions),
