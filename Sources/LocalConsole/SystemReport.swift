@@ -8,7 +8,7 @@
 import Foundation
 import MachO
 
-class SystemReport {
+public class SystemReport {
     static let shared = SystemReport()
     
     var versionString: String {
@@ -23,9 +23,9 @@ class SystemReport {
         
         switch state {
         case .nominal: return "Nominal"
-        case .fair : return "Fair"
-        case .serious : return "Serious"
-        case .critical : return "Critical"
+        case .fair: return "Fair"
+        case .serious: return "Serious"
+        case .critical: return "Critical"
         default: return "Unknown"
         }
     }
@@ -67,7 +67,7 @@ class SystemReport {
         var size = 0
         sysctlbyname("ker" + "n.os" + "type", nil, &size, nil, 0)
         
-        var string = [CChar](repeating: 0,  count: Int(size))
+        var string = [CChar](repeating: 0, count: Int(size))
         sysctlbyname("ker" + "n.os" + "type", &string, &size, nil, 0)
         return String(cString: string)
     }
@@ -76,7 +76,7 @@ class SystemReport {
         var size = 0
         sysctlbyname("ker" + "n.os" + "release", nil, &size, nil, 0)
         
-        var string = [CChar](repeating: 0,  count: Int(size))
+        var string = [CChar](repeating: 0, count: Int(size))
         sysctlbyname("ker" + "n.os" + "release", &string, &size, nil, 0)
         return String(cString: string)
     }
@@ -85,16 +85,14 @@ class SystemReport {
         var size = 0
         sysctlbyname("ker" + "n.ve" + "rsion", nil, &size, nil, 0)
         
-        var string = [CChar](repeating: 0,  count: Int(size))
+        var string = [CChar](repeating: 0, count: Int(size))
         sysctlbyname("ker" + "n.ve" + "rsion", &string, &size, nil, 0)
         let fullString = String(cString: string) /// Ex: Darwin Kernel Version 20.6.0: Mon May 10 03:15:29 PDT 2021; root:xnu-7195.140.13.0.1~20/RELEASE_ARM64_T8101
         
         let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.date.rawValue)
         if let matches = detector?.matches(in: fullString, options: [], range: NSRange(location: 0, length: fullString.utf16.count)) {
             for match in matches {
-                
                 if let date = match.date {
-                    
                     let dateformatter = DateFormatter()
                     dateformatter.dateStyle = .medium
                     
