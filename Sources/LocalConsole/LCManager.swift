@@ -1001,6 +1001,7 @@ public class LCManager: NSObject, UIGestureRecognizerDelegate {
         }
         
         // Show the right glyph for the current device being used.
+        // wow thats some attention to detail
         let deviceSymbol: String = {
             let hasHomeButton = UIScreen.main.value(forKey: "_displ" + "ayCorn" + "erRa" + "dius") as! CGFloat == 0
             
@@ -1029,6 +1030,11 @@ public class LCManager: NSObject, UIGestureRecognizerDelegate {
             UIApplication.shared.perform(NSSelectorFromString("terminateWithSuccess"))
         }
         
+        let forceCrashApplication = UIAction(title: "Force Crash App", image: UIImage(systemName: "exclamationmark.octagon.fill"), attributes: .destructive) { _ in
+            fatalError()
+        }
+        
+        // This might be redundant, controlconfig already has respring function
         let respring = UIAction(title: "Restart Spring" + "Board", image: UIImage(systemName: "arrowtriangle.backward"), attributes: .destructive) { _ in
             
             guard let window = UIApplication.shared.windows.first else { return }
@@ -1053,10 +1059,10 @@ public class LCManager: NSObject, UIGestureRecognizerDelegate {
         }
         
         debugActions.append(contentsOf: [viewFrames, systemReport, displayReport])
-        let destructActions = [terminateApplication, respring]
-        
+        let destructActions = [terminateApplication, respring, forceCrashApplication]
+
         let debugMenu = UIMenu(
-            title: "Debug", image: UIImage(systemName: "ant"),
+            title: "Debug", image: UIImage(systemName: "ladybug"),
             children: [
                 UIMenu(title: "", options: .displayInline, children: debugActions),
                 UIMenu(title: "", options: .displayInline, children: destructActions)
