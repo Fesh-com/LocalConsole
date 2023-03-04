@@ -635,11 +635,11 @@ public class LCManager: NSObject, UIGestureRecognizerDelegate {
     
     /// Copy the console view text to the device's clipboard.
     public func copyToClipboard() {
-        UIPasteboard.general.string = consoleTextView.text
+        UIPasteboard.general.string = currentText
     }
     
     public func getCurrentText() -> String {
-        return consoleTextView.text
+        return currentText
     }
     
     // MARK: - Private
