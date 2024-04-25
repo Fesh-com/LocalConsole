@@ -712,70 +712,7 @@ public class LCManager: NSObject, UIGestureRecognizerDelegate {
     }
     
     var timerInvalidationCounter = 0
-    
-    public func systemReport() {
-        DispatchQueue.main.async { [self] in
-            
-            if currentText != "" { print("\n") }
-            
-            dynamicReportTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [self] _ in
-                
-                guard consoleTextView.panGestureRecognizer.numberOfTouches == 0 else { return }
-                
-                var _currentText = currentText
-                
-                // To optimize performance, only scan the last 2500 characters of text for system report changes.
-                let range: NSRange = {
-                    if _currentText.count <= 2500 {
-                        return NSMakeRange(0, _currentText.count)
-                    }
-                    return NSMakeRange(_currentText.count - 2500, 2500)
-                }()
-                
-                let regex0 = try! NSRegularExpression(pattern: "Thermal State:      .*", options: NSRegularExpression.Options.caseInsensitive)
-                _currentText = regex0.stringByReplacingMatches(in: _currentText, options: [], range: range, withTemplate: "Thermal State:      \(SystemReport.shared.thermalState)")
-                
-                let regex1 = try! NSRegularExpression(pattern: "System Uptime:      .*", options: NSRegularExpression.Options.caseInsensitive)
-                _currentText = regex1.stringByReplacingMatches(in: _currentText, options: [], range: range, withTemplate: "System Uptime:      \(ProcessInfo.processInfo.systemUptime.formattedString!)")
-                
-                let regex2 = try! NSRegularExpression(pattern: "Low Power Mode:     .*", options: NSRegularExpression.Options.caseInsensitive)
-                _currentText = regex2.stringByReplacingMatches(in: _currentText, options: [], range: range, withTemplate: "Low Power Mode:     \(ProcessInfo.processInfo.isLowPowerModeEnabled)")
-                
-                if currentText != _currentText {
-                    currentText = _currentText
-                    
-                    timerInvalidationCounter = 0
-                    
-                } else {
-                    timerInvalidationCounter += 1
-                    
-                    // It has been 2 seconds and values have not changed.
-                    if timerInvalidationCounter == 2 {
-                        // Invalidate the timer if there is no longer anything to update.
-                        dynamicReportTimer = nil
-                    }
-                }
-            }
-            
-            print(
-                """
-                Model Name:         \(SystemReport.shared.gestaltMarketingName)
-                Model Identifier:   \(SystemReport.shared.gestaltModelIdentifier)
-                Architecture:       \(SystemReport.shared.gestaltArchitecture)
-                Firmware:           \(SystemReport.shared.gestaltFirmwareVersion)
-                Kernel Version:     \(SystemReport.shared.kernel) \(SystemReport.shared.kernelVersion)
-                System Version:     \(SystemReport.shared.versionString)
-                OS Compile Date:    \(SystemReport.shared.compileDate)
-                Memory:             \(round(100 * Double(ProcessInfo.processInfo.physicalMemory) * pow(10, -9)) / 100) GB
-                Processor Cores:    \(Int(ProcessInfo.processInfo.processorCount))
-                Thermal State:      \(SystemReport.shared.thermalState)
-                System Uptime:      \(ProcessInfo.processInfo.systemUptime.formattedString!)
-                Low Power Mode:     \(ProcessInfo.processInfo.isLowPowerModeEnabled)
-                """
-            )
-        }
-    }
-    
+
     func displayReport() {
         DispatchQueue.main.async { [self] in
             
@@ -846,7 +783,6 @@ public class LCManager: NSObject, UIGestureRecognizerDelegate {
                 }
             } else {
                 return UIAction(title: "Copy Text", image: UIImage(systemName: "doc.on.doc")) { _ in
-                    self.systemReport()
                     UIPasteboard.general.string = self.consoleTextView.text
                 }
             }
@@ -995,11 +931,7 @@ public class LCManager: NSObject, UIGestureRecognizerDelegate {
             self.debugBordersEnabled.toggle()
             self.menuButton.menu = self.makeMenu()
         }
-        
-        let systemReport = UIAction(title: "System Report", image: UIImage(systemName: "cpu")) { _ in
-            self.systemReport()
-        }
-        
+
         // Show the right glyph for the current device being used.
         // wow thats some attention to detail
         let deviceSymbol: String = {
@@ -1058,7 +990,7 @@ public class LCManager: NSObject, UIGestureRecognizerDelegate {
             }
         }
         
-        debugActions.append(contentsOf: [viewFrames, systemReport, displayReport])
+        debugActions.append(contentsOf: [viewFrames, displayReport])
         let destructActions = [terminateApplication, respring, forceCrashApplication]
 
         let debugMenu = UIMenu(
