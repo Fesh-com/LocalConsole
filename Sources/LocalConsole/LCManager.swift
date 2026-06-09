@@ -375,7 +375,7 @@ public class LCManager: NSObject, UIGestureRecognizerDelegate {
         
         // Configure console window.
         func fetchWindow() -> UIWindow? {
-            if #available(iOS 15.0, *) {
+            if #available(iOS 16.0, *) {
                 let windowScene = UIApplication.shared
                     .connectedScenes
                     .filter { $0.activationState == .foregroundActive }
@@ -773,7 +773,7 @@ public class LCManager: NSObject, UIGestureRecognizerDelegate {
     func makeMenu() -> UIMenu {
         let share: UIAction = {
             // Something here causes a crash < iOS 15. Fall back to copy text for iOS 15 and below.
-            if #available(iOS 16, *) {
+            if #available(iOS 16.0, *) {
                 return UIAction(title: "Share Text...", image: UIImage(systemName: "square.and.arrow.up")) { _ in
                     let activityViewController = UIActivityViewController(
                         activityItems: [self.consoleTextView.text ?? ""],
@@ -798,7 +798,7 @@ public class LCManager: NSObject, UIGestureRecognizerDelegate {
         // If device is phone in landscape, disable resize controller.
         if UIDevice.current.userInterfaceIdiom == .phone && consoleViewController.view.frame.width > consoleViewController.view.frame.height {
             resize.attributes = .disabled
-            if #available(iOS 15, *) {
+            if #available(iOS 16.0, *) {
                 resize.subtitle = "Portrait Orientation Only"
             }
         }
@@ -811,7 +811,7 @@ public class LCManager: NSObject, UIGestureRecognizerDelegate {
         
         var debugActions: [UIMenuElement] = []
         
-        if #available(iOS 15, *) {
+        if #available(iOS 16.0, *) {
             frameSymbol = "square.inset.filled"
             
             let deferredUserDefaultsList = UIDeferredMenuElement.uncached { completion in
@@ -1064,7 +1064,7 @@ public class LCManager: NSObject, UIGestureRecognizerDelegate {
     
     @objc func consolePiPPanner(recognizer: UIPanGestureRecognizer) {
         if recognizer.state == .began {
-            if #available(iOS 15, *) {
+            if #available(iOS 16.0, *) {
                 consolePiPPanner_frameRateRequestID = UUID()
                 FrameRateRequest.shared.activate(id: consolePiPPanner_frameRateRequestID!)
             }
@@ -1092,7 +1092,7 @@ public class LCManager: NSObject, UIGestureRecognizerDelegate {
             
         case .ended, .cancelled:
             
-            if #available(iOS 15, *), let id = consolePiPPanner_frameRateRequestID {
+                if #available(iOS 16.0, *), let id = consolePiPPanner_frameRateRequestID {
                 consolePiPPanner_frameRateRequestID = nil
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     FrameRateRequest.shared.deactivate(id: id)
